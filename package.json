@@ -1,0 +1,10 @@
+{
+  "name": "quizbeez",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter server dev\" \"pnpm --filter client dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

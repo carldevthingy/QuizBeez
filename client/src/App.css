@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+:root {
+    --primary: #0d6efd;
+    --text: #333333;
+    --bg: #ffffff;
+    height: 100%;
+}
+
+body{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: "RocaTwo";
+    src: url("/fonts/roca-two.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "SK";
+    src: url("/fonts/sk-concretica.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NixieOne";
+    src: url("/fonts/nixie-one.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+@theme {
+    --font-title: "RocaTwo", serif;
+    --font-desc: "NixieOne", serif;
+    --font-body: "sk", serif;
+    --breakpoint-card: 880px;
+    /* --breakpoint-default: 600px; */
+
+    --color-primary: #fecb56;
+    --color-light-yellow: #f2eddb;
+    --color-dark-yellow: #562b12;
+    --color-primary-text: white;
+    --color-footer: #fdc211;
+
+}
+
+  /* ------------------- animation from animate.css------------------- */
+  .animate__animated {
+   /* background-color: #0043a8; */
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-duration: var(--animate-duration);
+  animation-duration: var(--animate-duration);
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+
+@-webkit-keyframes shakeX {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+@keyframes shakeX {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.animate__shakeX {
+  -webkit-animation-name: shakeX;
+  animation-name: shakeX;
+}
+
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+.animate__fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+@-webkit-keyframes pulse1 {
+   from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.02, 1.02, 1.02);
+    transform: scale3d(1.02, 1.02, 1.02);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes pulse1 {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.02, 1.02, 1.02);
+    transform: scale3d(1.02, 1.02, 1.02);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.animate__pulse {
+  -webkit-animation-name: pulse1;
+  animation-name: pulse1;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
