@@ -397,7 +397,7 @@ const submissionRef = useRef<((zone: string | null) => void) | null>(null);
               </div>
             ) : (
               <a
-                href="/auth/login"
+                href="/user/login"
                 className="bg-black border text-white px-6 py-2 rounded-full font-bold text-sm transition-transform shrink-0 hover:text-yellow-400 decoration-transparent"
               >
                 LOGIN

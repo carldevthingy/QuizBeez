@@ -126,7 +126,7 @@ const PasswordReset = () => {
        <p className="text-center text-gray-600 text-sm">
                   Done changing password?{" "}
                     <Link
-                    to="/auth/login"
+                    to="/user/login"
                     className="text-sm text-dark-yellow hover:text-dark-yellow/95 underline"
                   >
                     Go to login

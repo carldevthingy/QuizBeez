@@ -60,7 +60,7 @@ const ForgotPassword = () => {
           >
                  <div className="flex justify-start -mt-3">
                   <Link
-                    to="/auth/login"
+                    to="/user/login"
                     className="text-sm text-dark-yellow hover:text-dark-yellow/95 underline inline-flex items-center gap-1"
                   >
                     <FaArrowLeft /> Back

@@ -6,7 +6,7 @@ export const sendVerificationEmail = async (
 ) => {
   const frontendUrl = process.env.FRONTEND_URL;
 
-  const verificationLink = `${frontendUrl}/auth/verification/${token}`;
+  const verificationLink = `${frontendUrl}/user/verification/${token}`;
 
   await transporter.sendMail({
     from: `"QuizBeez" <${process.env.EMAIL_USER}>`,
@@ -36,7 +36,7 @@ export const sendResetPasswordEmail = async (
     process.env.FRONTEND_URL;
 
   const resetPasswordLink =
-    `${frontendUrl}/auth/password-reset/${token}`;
+    `${frontendUrl}/user/password-reset/${token}`;
 
   await transporter.sendMail({
     from: `"QuizBeez" <${process.env.EMAIL_USER}>`,

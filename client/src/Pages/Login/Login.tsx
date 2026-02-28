@@ -123,7 +123,7 @@ const Login = () => {
 
             <div className="flex justify-end -mt-2 sm:-mt-3 landscape:mt-0">
               <Link
-                to="/auth/password-reset"
+                to="/user/password-reset"
                 className="text-xs sm:text-sm landscape:text-[10px] text-dark-yellow underline"
               >
                 Forgot password?
