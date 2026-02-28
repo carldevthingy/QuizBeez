@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { lazyNamed } from '@/utils/lazyNamed'
+import { LoadingOverlay } from '@/components/home/overlay/LoadingOverlay'
 
 const HeroSection = lazyNamed(() => import('@/components/home/HeroSection'), 'HeroSection')
 const ScrollSection = lazyNamed(() => import('@/components/home/ScrollSection'), 'ScrollSection')
@@ -11,14 +12,7 @@ export default function Home() {
   return (
     <Suspense
       fallback={
-        <div className="flex flex-col h-screen bg-light-yellow items-center justify-center">
-          <img
-            src="/game/loader.png"
-            alt="Loading..."
-            className="w-lg h-lg"
-          />
-          <h1 className='font-title text-5xl text-dark-yellow'>Loading...</h1>
-        </div>
+        <LoadingOverlay />
       }
     >
       <HeroSection />

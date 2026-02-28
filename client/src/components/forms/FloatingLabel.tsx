@@ -10,7 +10,7 @@ export const FloatingLabel = ({ htmlFor, label, isTextArea = false, isEditing }:
         <label
             htmlFor={htmlFor}
             className={`absolute font-medium text-(--text) transform
-        -translate-y-4 scale-75 top-2 z-10 origin-left bg-(--bg) px-2
+        -translate-y-4 scale-75 top-2 z-10 origin-left bg-transparent px-2
         peer-focus:px-2 peer-focus:text-dark-yellow
         peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2
         peer-focus:top-2 peer-focus:scale-75

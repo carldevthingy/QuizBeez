@@ -89,7 +89,7 @@ const UserProfile = () => {
 
 
   return(
-  <div className="min-h-screen bg-[#fffcf3] flex flex-col items-center justify-center pt-12 px-4 relative">
+  <div className="min-h-screen bg-[#fffcf3] flex flex-col items-center justify-center pt-10 pb-10 px-4 relative">
       <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-lg flex flex-col gap-6 animate__animated animate__fadeIn">
         <div className="flex justify-start -mt-3">
           <Link

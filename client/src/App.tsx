@@ -11,19 +11,13 @@ import Home from './Pages/home/Home.tsx';
 import { AuthLayout } from './Pages/auth/AuthLayout.tsx';
 import './App.css';
 import UserProfile from './Pages/profile/UserProfile.tsx';
+import { LoadingOverlay } from './components/home/overlay/LoadingOverlay.tsx';
 
 const GuestRoute = () => {
   const { user, isLoading } = useAuth();
 
   // Wait auth check otherwise
-  if (isLoading) return  <div className="flex flex-col h-screen bg-light-yellow items-center justify-center">
-          <img
-            src="/game/loader.png"
-            alt="Loading..."
-            className="w-lg h-lg"
-          />
-          <h1 className='font-title text-5xl text-dark-yellow'>Loading...</h1>
-        </div>;
+  if (isLoading) return <LoadingOverlay />
 
   return user ? <Navigate to="/game" replace /> : <Outlet />;
 };
@@ -44,7 +38,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/game" element={<BeeGame />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/auth" element={<AuthLayout />}>
+          <Route path="/user" element={<AuthLayout />}>
 
            {/* REDIRECT IF USER IS LOGGED IN  */}
             <Route element={<GuestRoute />}>
