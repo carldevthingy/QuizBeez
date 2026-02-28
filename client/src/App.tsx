@@ -44,13 +44,16 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/game" element={<BeeGame />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route element={<GuestRoute />}>
-            <Route path="/auth" element={<AuthLayout />}>
+          <Route path="/auth" element={<AuthLayout />}>
+
+           {/* REDIRECT IF USER IS LOGGED IN  */}
+            <Route element={<GuestRoute />}>
               <Route path="login" element={<Login />} />
               <Route path="password-reset" element={<ForgotPassword />} />
-              <Route path="verification/:token" element={<VerifyPage />} />
-              <Route path="password-reset/:token" element={<ResetPassword />} />
             </Route>
+
+            <Route path="verification/:token" element={<VerifyPage />} />
+            <Route path="password-reset/:token" element={<ResetPassword />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
