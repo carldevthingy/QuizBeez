@@ -30,8 +30,8 @@ import {
 } from "@/components/game/modals";
 import { useAuth } from "@/context/AuthContext.ts";
 import { FaUserCog } from "react-icons/fa";
-import { Joystick } from "@/components/game/Joystick";
-import { ActionButton } from "@/components/game/ActionButton";
+import { Joystick } from "@/components/game/mobile/Joystick";
+import { ActionButton } from "@/components/game/mobile/ActionButton";
 
 const BeeGame = () => {
   const [gameMode, setGameMode] = useState<GameMode>("loading");
@@ -434,14 +434,14 @@ const submissionRef = useRef<((zone: string | null) => void) | null>(null);
         )}
 
         {/* JOYSTICK AND ACTION BUTTON FOR MOBILE */}
-        {(isMobileControlsVisible && gameMode === "menu") || gameMode === "quiz"
-          ? !activeModal && (
-              <>
-                <Joystick onMove={moveBee} />
-                <ActionButton onTap={pressEnter} />
-              </>
-            )
-          : null}
+        {isMobileControlsVisible &&
+          (gameMode === "menu" || gameMode === "quiz") &&
+          !activeModal && (
+            <>
+              <Joystick onMove={moveBee} />
+              <ActionButton onTap={pressEnter} />
+            </>
+          )}
 
         {/* --- MODAL RENDERING --- */}
         {activeModal && (

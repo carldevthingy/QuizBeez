@@ -15,7 +15,7 @@ export const Joystick = ({ onMove }: JoystickProps) => {
             zone: zoneRef.current,
             mode: 'static',
             position: { left: '50%', top: '50%' },
-            color: '#ebc354',
+            color: '#facc15',
             size: 100,
             threshold: 0.1,
         });
