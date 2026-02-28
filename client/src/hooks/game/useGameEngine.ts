@@ -32,7 +32,8 @@ export const useGameEngine = (
     onZoneEnter: (zone: string | null) => void,
     onMenuSelect: (id: string) => void,
     onToggleOptions: () => void,
-    playSfx: (name: SoundName) => void
+    playSfx: (name: SoundName) => void,
+    submissionRef: React.RefObject<((zone: string | null) => void) | null>
 ) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const requestRef = useRef<number | null>(null);
@@ -132,6 +133,38 @@ export const useGameEngine = (
         }
     };
 
+    //FOR TOUCH CONTROLS
+   const moveBee = useCallback((direction: string) => {
+    const k = gameState.current.keys;
+
+    //clear everything
+    k.up = k.down = k.left = k.right = false;
+
+    if (direction === 'stop') {
+        gameState.current.bee.isMoving = false;
+        return;
+    }
+
+    if (direction === 'up') k.up = true;
+    if (direction === 'down') k.down = true;
+    if (direction === 'left') { k.left = true; gameState.current.bee.direction = 'left'; }
+    if (direction === 'right') { k.right = true; gameState.current.bee.direction = 'right'; }
+
+    gameState.current.bee.isMoving = true;
+    }, []);
+
+    //FOR ACTION BUTTON AND ENTER TO SELECT IN MENU OR SELECT ANSWER
+    const pressEnter = useCallback(() => {
+        if (modeRef.current === 'menu') {
+            const hovered = gameState.current.menuFlowers.find(f => f.isHovered);
+            if (hovered) onMenuSelect(hovered.id);
+        } else if (modeRef.current === 'quiz') {
+            if (submissionRef.current) {
+                submissionRef.current(gameState.current.currentZone);
+            }
+        }
+    }, [onMenuSelect, submissionRef]);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -151,6 +184,10 @@ export const useGameEngine = (
 
         const handleKey = (e: KeyboardEvent, isPressed: boolean) => {
             if (e.repeat) return;
+            if (e.code === 'Enter' && isPressed) {
+            pressEnter();
+            return;
+            }
             if (e.code === 'Escape' && isPressed) {
                 callbacks.current.onToggleOptions();
                 if (!modalRef.current) {
@@ -361,5 +398,5 @@ export const useGameEngine = (
         };
     }, []);
 
-    return { canvasRef, resetBeePosition, getCurrentZone, triggerFeedback };
+    return { canvasRef, resetBeePosition, getCurrentZone, triggerFeedback, moveBee, pressEnter };
 };

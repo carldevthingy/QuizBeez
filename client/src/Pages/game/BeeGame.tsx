@@ -30,6 +30,8 @@ import {
 } from "@/components/game/modals";
 import { useAuth } from "@/context/AuthContext.ts";
 import { FaUserCog } from "react-icons/fa";
+import { Joystick } from "@/components/game/Joystick";
+import { ActionButton } from "@/components/game/ActionButton";
 
 const BeeGame = () => {
   const [gameMode, setGameMode] = useState<GameMode>("loading");
@@ -58,6 +60,8 @@ const BeeGame = () => {
   // auth
   const { user, logout: handleLogout } = useAuth();
 
+  const [isMobileControlsVisible, setIsMobileControlsVisible] = useState(false);
+
   // Audio Hook
   const {
     loadAudio,
@@ -76,6 +80,17 @@ const BeeGame = () => {
   const timerRef = useRef(timer);
 
   const isInitialized = useRef(false);
+
+  //isMobile check
+  useEffect(() => {
+  const checkTouch = () => {
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    setIsMobileControlsVisible(hasTouch);
+  };
+
+  checkTouch();
+  }, []);
 
   // --- Sync Refs ---
   useEffect(() => {
@@ -168,8 +183,10 @@ const BeeGame = () => {
     }
   }, []);
 
+const submissionRef = useRef<((zone: string | null) => void) | null>(null);
+
   // --- Init engine ---
-  const { canvasRef, resetBeePosition, getCurrentZone, triggerFeedback } =
+  const { canvasRef, resetBeePosition, getCurrentZone, triggerFeedback, moveBee, pressEnter } =
     useGameEngine(
       gameMode,
       activeModal,
@@ -178,6 +195,7 @@ const BeeGame = () => {
       handleMenuSelect,
       toggleOptions,
       playSfx,
+      submissionRef
     );
 
   // --- Game Logic ---
@@ -208,6 +226,10 @@ const BeeGame = () => {
     },
     [currentQIndex, triggerFeedback, selectedQuiz, customTimer, playSfx],
   );
+
+  useEffect(() => {
+      submissionRef.current = handleAnswerSubmission;
+  }, [handleAnswerSubmission]);
 
   // --- Timer Logic ---
   useEffect(() => {
@@ -342,7 +364,7 @@ const BeeGame = () => {
     <div className="w-full min-h-screen flex flex-col bg-[#fffcf3]">
       {/* --- NAV BAR --- */}
       <nav className="top-0 pt-6 px-4 z-40">
-        <div className="max-w-[90%] md:max-w-[80%] lg:max-w-[70%] mx-auto bg-white px-4 md:px-6 py-3 rounded-full shadow-xl flex items-center justify-between border-2 border-black relative">
+        <div className="min-w-195 max-w-[90%] md:max-w-[80%] lg:max-w-[70%] mx-auto bg-white px-4 md:px-6 py-3 rounded-full shadow-xl flex items-center justify-between border-2 border-black relative">
           <a
             href="/"
             className="font-black text-lg md:text-xl text-black decoration-transparent "
@@ -410,6 +432,16 @@ const BeeGame = () => {
             uiCurrentZone={uiCurrentZone}
           />
         )}
+
+        {/* JOYSTICK AND ACTION BUTTON FOR MOBILE */}
+        {(isMobileControlsVisible && gameMode === "menu") || gameMode === "quiz"
+          ? !activeModal && (
+              <>
+                <Joystick onMove={moveBee} />
+                <ActionButton onTap={pressEnter} />
+              </>
+            )
+          : null}
 
         {/* --- MODAL RENDERING --- */}
         {activeModal && (
@@ -494,14 +526,17 @@ const BeeGame = () => {
           />
         )}
       </div>
-
-      <div className="mx-auto mt-6 text-center max-w-2xl px-4">
-        <p className="text-gray-700 font-medium md:text-lg bg-white/50 py-3 px-6 rounded-2xl border-2 border-gray-200 shadow-sm">
-          Fly around using{" "}
-          <span className="font-black text-gray-700 tracking-widest">WASD</span>
-          . Answer questions by standing in what you think is the correct spot
-          when the timer runs out.
-        </p>
+      <div className="min-w-195">
+        <div className="mx-auto mt-6 text-center max-w-2xl px-4">
+          <p className="text-gray-700 font-medium md:text-lg bg-white/50 py-3 px-6 rounded-2xl border-2 border-gray-200 shadow-sm">
+            Fly around using{" "}
+            <span className="font-black text-gray-700 tracking-widest">
+              WASD
+            </span>
+            . Answer questions by standing in what you think is the correct spot
+            when the timer runs out.
+          </p>
+        </div>
       </div>
     </div>
   );
