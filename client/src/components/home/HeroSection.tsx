@@ -77,9 +77,10 @@ export function HeroSection() {
                   FAQS
                 </a>
 
-                <button className="bg-black text-white w-full py-3 rounded-full font-bold text-sm tracking-widest hover:scale-105 transition-transform hover:text-primary mt-2">
+                <Link className="bg-black text-center text-white w-full py-3 rounded-full font-bold text-sm tracking-widest hover:scale-105 transition-transform hover:text-primary mt-2"
+                to={"/game"}>
                   PLAY NOW
-                </button>
+                </Link>
               </div>
             )}
           </div>
@@ -112,9 +113,10 @@ export function HeroSection() {
                   engaging quiz platform.
                 </p>
 
-                <button className="block lg:inline-block align-baseline mx-auto lg:mx-0 lg:ml-2 mt-8 lg:mt-0 bg-black text-yellow-400 border-2 border-gray-700 px-10 py-3 lg:px-5 lg:py-1 rounded-full font-black text-lg lg:text-xl tracking-widest font-body hover:bg-white hover:text-dark-yellow">
+                <Link className="block lg:inline-block align-baseline mx-auto lg:mx-0 lg:ml-2 mt-8 lg:mt-0 bg-black text-yellow-400 border-2 border-gray-700 px-10 py-3 lg:px-5 lg:py-1 rounded-full font-black text-lg lg:text-xl tracking-widest font-body hover:bg-white hover:text-dark-yellow"
+                to={"/game"}>
                   PLAY NOW
-                </button>
+                </Link >
               </div>
             </div>
           </div>
