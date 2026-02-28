@@ -108,3 +108,24 @@ export const createGoogleUser = async (username: string, email: string, googleId
   );
   return result.rows[0];
 };
+
+
+
+export const updateUsername = async (userId: string | number, newUsername: string) => {
+  try {
+    const result = await pool.query(
+      `UPDATE users SET username = $1 WHERE id = $2 RETURNING id, username, email, profile`,
+      [newUsername, userId]
+    );
+    return result.rows[0];
+  } catch (err: any) {
+    if (err.code === "23505" && err.constraint === "users_username_key") {
+      throw new Error("Username already taken");
+    }
+    throw err;
+  }
+};
+
+export const deleteUserById = async (userId: string | number) => {
+  await pool.query("DELETE FROM users WHERE id = $1", [userId]);
+};

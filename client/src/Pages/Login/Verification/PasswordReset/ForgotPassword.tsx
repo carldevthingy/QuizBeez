@@ -3,6 +3,7 @@ import { useFetch } from '@/hooks/api/useFetch';
 import { FloatingLabel } from '@/components/forms/FloatingLabel';
 import validator from 'validator'
 import { Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 
 
 const ForgotPassword = () => {
@@ -60,9 +61,9 @@ const ForgotPassword = () => {
                  <div className="flex justify-start -mt-3">
                   <Link
                     to="/auth/login"
-                    className="text-sm text-dark-yellow hover:text-dark-yellow/95 underline"
+                    className="text-sm text-dark-yellow hover:text-dark-yellow/95 underline inline-flex items-center gap-1"
                   >
-                    Back
+                    <FaArrowLeft /> Back
                   </Link>
                 </div>
             <h2 className="text-2xl font-bold text-center text-gray-800">

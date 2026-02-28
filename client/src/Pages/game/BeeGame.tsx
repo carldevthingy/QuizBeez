@@ -29,7 +29,7 @@ import {
   CreateQuizForm,
 } from "@/components/game/modals";
 import { useAuth } from "@/context/AuthContext.ts";
-
+import { FaUserCog } from "react-icons/fa";
 
 const BeeGame = () => {
   const [gameMode, setGameMode] = useState<GameMode>("loading");
@@ -135,7 +135,10 @@ const BeeGame = () => {
           const data = await quizResponse.json();
           setCustomQuizzes(data);
         } else {
-          console.error("Failed to fetch quizzes. Status:", quizResponse.status);
+          console.error(
+            "Failed to fetch quizzes. Status:",
+            quizResponse.status,
+          );
         }
       } catch (error) {
         console.error("Failed to load custom quizzes from server", error);
@@ -211,7 +214,7 @@ const BeeGame = () => {
     if (gameMode !== "quiz") return;
 
     const interval = window.setInterval(() => {
-      if(gameMode !== 'quiz'){
+      if (gameMode !== "quiz") {
         if (activeModalRef.current) return;
       }
 
@@ -248,7 +251,6 @@ const BeeGame = () => {
     setQuizToEdit(quiz);
     setActiveModal("create_quiz");
   };
-
 
   // --- only handles local state updates ---
   const handleSaveCustomQuiz = (savedQuiz: QuizSet) => {
@@ -298,7 +300,6 @@ const BeeGame = () => {
       setQuizToDelete(null);
     }
   };
-
 
   const selectQuiz = (quiz: QuizSet) => {
     setSelectedQuiz(quiz);
@@ -350,12 +351,28 @@ const BeeGame = () => {
           </a>
           <div className="flex items-center gap-3">
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="bg-black text-white px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition-transform shrink-0 hover:text-yellow-400"
-              >
-                LOGOUT
-              </button>
+              <div className="relative group">
+                {/* Profile Button */}
+                <button className="bg-black text-white px-6 py-2 rounded-full font-bold text-sm transition-transform hover:text-yellow-400">
+                  <FaUserCog size={24} />
+                </button>
+
+                {/* Dropdown Menu */}
+                <div className="absolute right-0 mt-0 w-40 bg-white border-2 border-black rounded-lg shadow-xl hidden group-hover:block group-focus-within:block overflow-hidden">
+                  <a
+                    href="/profile"
+                    className="block px-4 py-3 text-black font-semibold hover:bg-gray-100 transition-colors"
+                  >
+                    Profile
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-3 text-red-600 font-semibold hover:bg-red-50 hover:cursor-pointer transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
             ) : (
               <a
                 href="/auth/login"

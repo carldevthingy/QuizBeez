@@ -16,7 +16,7 @@ export const requestResetPassword = async (email: string) => {
   const user = await userRepository.findVerifiedUserByEmail(email);
 
   if (!user) throw new Error("User not found");
-  if (user.password === null) throw new Error("Password reset is not available for this user");
+  // if (user.password === null) throw new Error("Password reset is not available for this user");
   if (user.verification_token !== null) throw new Error("Already have a pending request");
 
   const verificationToken = crypto.randomBytes(32).toString('hex');

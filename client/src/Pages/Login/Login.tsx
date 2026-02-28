@@ -5,6 +5,7 @@ import Register from "./Register";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
+import { FaArrowLeft } from "react-icons/fa";
 
 
 export type FormControls = {
@@ -85,7 +86,15 @@ const Login = () => {
           <div
             className="w-full p-6 bg-white rounded-xl shadow-lg flex flex-col gap-6 transform animate__animated animate__pulse"
           >
-            <h2 className="text-2xl font-bold text-center text-gray-800">
+              <div className="flex justify-start -mt-3">
+                <Link
+                to="/game"
+                className="text-sm inline-flex items-center gap-1 text-dark-yellow hover:text-dark-yellow/95 underline"
+                >
+                  <FaArrowLeft /> Game
+                </Link>
+              </div>
+            <h2 className="text-2xl -mt-5 font-bold text-center text-gray-800">
               LOGIN
             </h2>
 

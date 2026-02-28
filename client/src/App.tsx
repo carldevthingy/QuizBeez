@@ -10,6 +10,7 @@ import BeeGame from './Pages/game/BeeGame.tsx';
 import Home from './Pages/home/Home.tsx';
 import { AuthLayout } from './Pages/auth/AuthLayout.tsx';
 import './App.css';
+import UserProfile from './Pages/profile/UserProfile.tsx';
 
 const GuestRoute = () => {
   const { user, isLoading } = useAuth();
@@ -42,6 +43,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/game" element={<BeeGame />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route element={<GuestRoute />}>
             <Route path="/auth" element={<AuthLayout />}>
               <Route path="login" element={<Login />} />
