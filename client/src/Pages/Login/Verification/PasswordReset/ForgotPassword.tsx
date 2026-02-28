@@ -56,7 +56,7 @@ const ForgotPassword = () => {
   return (
     <>
           <div
-            className=" w-full p-6 bg-white rounded-xl shadow-lg flex flex-col gap-6 animate__animated animate__pulse"
+            className=" max-h-screen w-full p-6 bg-white rounded-xl shadow-lg flex flex-col gap-6 animate__animated animate__pulse"
           >
                  <div className="flex justify-start -mt-3">
                   <Link

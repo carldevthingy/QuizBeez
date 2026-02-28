@@ -84,7 +84,7 @@ const Login = () => {
           {/* LOGIN CARD */}
           {!isFlipped &&
           <div
-            className="w-full p-6 bg-white rounded-xl shadow-lg flex flex-col gap-6 transform animate__animated animate__pulse"
+            className="w-full p-6 bg-white max-h-screen rounded-xl shadow-lg flex flex-col gap-6 transform animate__animated animate__pulse"
           >
               <div className="flex justify-start -mt-3">
                 <Link
@@ -190,7 +190,7 @@ const Login = () => {
 }
           {isFlipped &&
           <div
-            className="relative w-full p-6 bg-white rounded-xl shadow-lg flex-col gap-4 animate__animated animate__pulse"
+            className="relative max-h-screen w-full p-6 bg-white rounded-xl shadow-lg flex-col gap-4 animate__animated animate__pulse"
           >
             <h2 className="text-2xl font-bold text-center text-gray-800">
               REGISTER

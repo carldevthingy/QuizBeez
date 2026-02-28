@@ -36,7 +36,7 @@ const VerifyPage = () => {
   }, [token]);
 
   return (
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 text-center animate__animated animate__pulse space-y-6">
+      <div className="w-full max-h-screen max-w-md bg-white rounded-2xl shadow-xl p-8 text-center animate__animated animate__pulse space-y-6">
 
         <h1 className="text-2xl font-semibold text-gray-800">
           Email Verification

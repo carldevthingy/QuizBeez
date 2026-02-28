@@ -58,7 +58,7 @@ const PasswordReset = () => {
     <>
 
           <div
-            className=" w-full p-6 bg-white rounded-xl shadow-lg flex flex-col gap-6 animate__animated animate__pulse"
+            className=" w-full p-6 max-h-screen bg-white rounded-xl shadow-lg flex flex-col gap-6 animate__animated animate__pulse"
           >
 
 
