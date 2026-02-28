@@ -22,7 +22,7 @@ export function FAQ() {
     },
     {
         question: "Can I play on my phone?",
-        answer: "Not yet. Mobile play is not implemented at the moment, but we’re working on it!"
+        answer: "Yes, you can — you just might need to zoom out a bit."
     }
     ];
 
