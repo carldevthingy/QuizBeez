@@ -1,19 +1,31 @@
 import type { Question, QuizSet } from "@/config/gameConfig";
-import { useFetch } from "@/hooks/api/useFetch";
 import { useState } from "react";
 
-interface CreateQuizProps{
+export interface AiGeneratedQuiz {
+  title: string;
+  description: string;
+  questions: Question[];
+}
+
+interface CreateQuizProps {
   initialData: QuizSet | null;
   onSave: (q: QuizSet) => void;
   onCancel: () => void;
+  onAiGenerate: (text: string) => Promise<AiGeneratedQuiz | "ERROR">;
+  isAiLoading: boolean;
+  aiError: string | null;
+  isLoading: boolean;
 }
 
 export const CreateQuizForm = ({
   initialData,
   onSave,
+  onAiGenerate,
   onCancel,
+  isAiLoading,
+  aiError,
+  isLoading,
 }: CreateQuizProps) => {
-
   const [title, setTitle] = useState(initialData?.title || "");
   const [desc, setDesc] = useState(initialData?.description || "");
   const [questions, setQuestions] = useState<Question[]>(
@@ -33,14 +45,56 @@ export const CreateQuizForm = ({
   const [formError, setFormError] = useState<string | null>(null);
   const [shakeButton, setShakeButton] = useState(false);
 
-  const { fetchData, error, loading } = useFetch<unknown>();
+  // --- AI Generator State ---
+  const [showAiPanel, setShowAiPanel] = useState(false);
+  const [aiText, setAiText] = useState("");
 
   const handleFormError = (message: string) => {
     setFormError(message);
     setShakeButton(true);
     setTimeout(() => setShakeButton(false), 800);
+    setTimeout(() => {
+      setFormError("");
+    }, 3000);
   };
 
+  // --- AI Generation Logic (Using gemini API) ---
+  const handleAiGenerate = async () => {
+    if (!aiText.trim()) {
+      handleFormError("Please paste some text for the AI to generate a quiz.");
+      return;
+    }
+
+    try {
+      const data = await onAiGenerate(aiText);
+
+      if (data === "ERROR") {
+        handleFormError("Can't generate questions without material");
+        return;
+      }
+
+      setTitle(data.title);
+      setDesc(data.description);
+      setQuestions(
+        data.questions.map((q, i) => ({
+          id: i + 1,
+          text: q.text,
+          choices: q.choices,
+          correct: q.correct,
+        })),
+      );
+
+      setShowAiPanel(false);
+      console.log(aiError);
+      // setAiText(aiError ? aiError : "");
+    } catch (err) {
+      handleFormError(
+        err instanceof Error ? err.message : "AI generation failed.",
+      );
+    }
+  };
+
+  // --- Form Handlers ---
   const handleQChange = (idx: number, field: string, val: string) => {
     const newQ = [...questions];
     if (field === "text") newQ[idx].text = val;
@@ -96,9 +150,7 @@ export const CreateQuizForm = ({
     setQuestions(newQ);
   };
 
-  const handleSave = async () => {
-    setFormError(null);
-
+  const handleSave = () => {
     if (
       !title ||
       questions.some((q) => !q.text || q.choices.some((c) => !c.text))
@@ -107,7 +159,6 @@ export const CreateQuizForm = ({
       return;
     }
 
-    const isEditing = !!initialData && !!initialData.id;
     const payload = {
       id: initialData ? initialData.id : `custom_${Date.now()}`,
       title,
@@ -116,39 +167,61 @@ export const CreateQuizForm = ({
       isCustom: true,
     };
 
-    const endpoint = isEditing ? `/api/quizzes/${payload.id}` : `/api/quizzes`;
-    const method = isEditing ? "PUT" : "POST";
-
-    const response = await fetchData(endpoint, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (response?.ok || (response && !response.message && !error)) {
-      const finalSavedQuiz = { ...payload, id: response.quizId || payload.id };
-      onSave(finalSavedQuiz);
-    } else if (response?.message) {
-      handleFormError(response.message);
-    } else if (error) {
-      handleFormError("Network or server error occurred");
-    }
+    onSave(payload);
   };
 
   return (
     <div className="bg-white p-6 rounded-xl border-4 border-purple-500 shadow-2xl w-175 h-137.5 flex flex-col relative">
-      {loading && (
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 rounded-xl flex items-center justify-center">
+      {/* Loading Overlay */}
+      {(isLoading || isAiLoading) && (
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-20 rounded-xl flex items-center justify-center flex-col gap-2">
           <span className="text-purple-700 font-bold text-2xl animate-pulse drop-shadow-sm">
-            Saving Hive...
+            {isAiLoading ? "AI is weaving your Hive..." : "Saving Hive..."}
           </span>
         </div>
       )}
 
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        {initialData ? "EDIT YOUR HIVE" : "CREATE YOUR HIVE"}
-      </h2>
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-gray-800">
+          {initialData ? "EDIT YOUR HIVE" : "CREATE YOUR HIVE"}
+        </h2>
 
+        {/* AI Toggle Button */}
+        <button
+          onClick={() => setShowAiPanel(!showAiPanel)}
+          className="bg-purple-500 text-white font-bold py-2 px-4 rounded-lg shadow hover:opacity-90 transition-all text-sm flex items-center gap-2"
+        >
+          AI GENERATOR
+        </button>
+      </div>
+
+      {/* AI Panel Expansion */}
+      {showAiPanel && (
+        <div className="mb-4 p-4 bg-indigo-50 border-2 border-indigo-200 rounded-lg animate__animated animate__fadeIn">
+          <p className="text-xs font-bold text-indigo-800 mb-2 uppercase tracking-wide">
+            Generate questions from text, notes, or articles
+          </p>
+          <textarea
+            className="w-full border-2 border-indigo-100 rounded-md p-3 mb-3 text-sm focus:border-indigo-400 outline-none resize-none bg-white custom-scrollbar"
+            rows={4}
+            placeholder="Paste your source material here..."
+            value={aiText}
+            onChange={(e) => setAiText(e.target.value)}
+          />
+          <div className="flex justify-end">
+            <button
+              onClick={handleAiGenerate}
+              disabled={!aiText.trim() || isAiLoading}
+              className="bg-indigo-600 text-white font-bold py-2 px-6 rounded-md text-sm hover:bg-indigo-700 transition-colors disabled:opacity-50"
+            >
+              Generate Quiz
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Scrollable Form Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
         <input
           className="w-full border-2 border-gray-200 rounded-lg p-3 mb-2 font-bold text-lg text-gray-800 placeholder-gray-400 focus:border-purple-500 outline-none transition-all"
@@ -254,17 +327,18 @@ export const CreateQuizForm = ({
         </div>
       )}
 
+      {/* Footer Actions */}
       <div className="flex gap-3 mt-2 pt-4 border-t-2 border-gray-100 shrink-0">
         <button
           onClick={handleSave}
-          disabled={loading}
+          disabled={isLoading || isAiLoading}
           className={`flex-1 bg-green-500 text-white font-bold py-3 rounded-lg hover:bg-green-600 hover:shadow-md transition-all text-sm disabled:opacity-50 disabled:cursor-wait ${shakeButton ? "animate__animated animate__shakeX" : ""}`}
         >
-          {loading ? "SAVING..." : "SAVE QUIZ"}
+          {"SAVE QUIZ"}
         </button>
         <button
           onClick={onCancel}
-          disabled={loading}
+          disabled={isLoading || isAiLoading}
           className="bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-lg hover:bg-gray-300 hover:shadow-md transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           CANCEL
